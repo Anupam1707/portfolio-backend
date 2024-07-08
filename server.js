@@ -13,9 +13,9 @@ mongoose.connect(mongoURI, {
 
 // Define Schema
 const certificateSchema = new mongoose.Schema({
-  imageUrl: String,
   title: String,
-  description: String
+  description: String,
+  imageUrl: String
 });
 
 // Define Model
