@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 3000;
-const mongoURI = 'mongodb+srv://tiak:mongodb.ak17@mycertificatescluster.nvq5wun.mongodb.net/?retryWrites=true&w=majority&appName=MyCertificatesCluster/certificates';
+const mongoURI = 'mongodb+srv://tiak:mongodb.ak17@mycertificatescluster.nvq5wun.mongodb.net/mycertificatescluster';
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, {
@@ -22,7 +22,7 @@ const certificateSchema = new mongoose.Schema({
 const Certificate = mongoose.model('Certificate', certificateSchema);
 
 // Endpoint to fetch certificates
-app.get('certificates', (req, res) => {
+app.get('/certificates', (req, res) => {
   Certificate.find()
     .then(certificates => res.json(certificates))
     .catch(err => res.status(500).send(err));
