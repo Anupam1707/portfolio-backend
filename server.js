@@ -1,38 +1,32 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-
 const app = express();
 const port = process.env.PORT || 3000;
+const mongoURI = 'mongodb+srv://tiak:mongodb.ak17@mycertificatescluster.nvq5wun.mongodb.net/?retryWrites=true&w=majority&appName=MyCertificatesCluster/certificates';
 
-app.use(bodyParser.json());
-app.use(cors());
+// Connect to MongoDB
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
 
-mongoose.connect('mongodb+srv://tiak:mongodb.ak17@mycertificatescluster.nvq5wun.mongodb.net/?retryWrites=true&w=majority&appName=MyCertificatesCluster', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
+// Define Schema
 const certificateSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    imageUrl: String
+  imageUrl: String,
+  title: String,
+  description: String
 });
 
-const Certificate = mongoose.model('Certificate', certificateSchema);
+// Define Model
+const Certificate = mongoose.model('certificate', certificateSchema);
 
-app.get('/certificates', async (req, res) => {
-    const certificates = await Certificate.find();
-    res.json(certificates);
+// Endpoint to fetch certificates
+app.get('/certificates', (req, res) => {
+  Certificate.find()
+    .then(certificates => res.json(certificates))
+    .catch(err => res.status(500).send(err));
 });
 
-app.post('/certificates', async (req, res) => {
-    const newCertificate = new Certificate(req.body);
-    await newCertificate.save();
-    res.json(newCertificate);
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+// Start server
+app.listen(port, () => console.log(`Server running on port ${port}`));
