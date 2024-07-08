@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 const mongoURI = 'mongodb+srv://tiak:mongodb.ak17@mycertificatescluster.nvq5wun.mongodb.net/mycertificatescluster';
+
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, {
