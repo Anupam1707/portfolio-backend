@@ -19,7 +19,7 @@ const certificateSchema = new mongoose.Schema({
 });
 
 // Define Model
-const Certificate = mongoose.model('certificate', certificateSchema);
+const Certificate = mongoose.model('Certificate', certificateSchema);
 
 // Endpoint to fetch certificates
 app.get('/certificates', (req, res) => {
