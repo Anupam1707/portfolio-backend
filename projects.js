@@ -29,7 +29,7 @@ const certificateSchema = new mongoose.Schema({
 const Certificate = mongoose.model('Certificate', certificateSchema);
 
 // Endpoint to fetch certificates
-app.get('/certificates', (req, res) => {
+app.get('/projects', (req, res) => {
   Certificate.find()
     .then(certificates => res.json(certificates))
     .catch(err => {
