@@ -5,8 +5,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // URIs for the different databases
-const certificatesMongoURI = 'mongodb+srv://tiak:mongodb.ak17@mycertificatescluster.nvq5wun.mongodb.net/mycertificatescluster';
-const projectsMongoURI = 'mongodb+srv://tiak:mongodb.ak17@mycertificatescluster.nvq5wun.mongodb.net/projects';
+const certificatesMongoURI = 'mongodb+srv://tiak:mongodb.ak17@portfolio-dataset.ha4l0ka.mongodb.net/?retryWrites=true&w=majority&appName=portfolio-dataset/certificates';
+const projectsMongoURI = 'mongodb+srv://tiak:mongodb.ak17@portfolio-dataset.ha4l0ka.mongodb.net/?retryWrites=true&w=majority&appName=portfolio-dataset/projects';
 
 app.use(cors());
 app.use(express.json()); // Add this to parse JSON bodies
