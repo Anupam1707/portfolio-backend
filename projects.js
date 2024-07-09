@@ -12,7 +12,7 @@ mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
-  console.log('MongoDB Connected');
+  console.log('MongoDB Connected at Project.js');
 }).catch(err => {
   console.error('MongoDB Connection Error:', err);
   process.exit(1); // Exit process with failure
@@ -46,5 +46,5 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server at Projects.js running on port ${port}`);
 });
