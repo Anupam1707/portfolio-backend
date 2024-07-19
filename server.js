@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 // URIs for the different databases
 const certificatesMongoURI = 'mongodb+srv://tiak:mongodb.ak17@portfolio-dataset.ha4l0ka.mongodb.net/certificates';
 const projectsMongoURI = 'mongodb+srv://tiak:mongodb.ak17@portfolio-dataset.ha4l0ka.mongodb.net/projects';
+const blogsMongoURI = 'mongodb+srv://tiak:mongodb.ak17@portfolio-dataset.ha4l0ka.mongodb.net/blogs';
 
 app.use(cors());
 app.use(express.json()); // Add this to parse JSON bodies
@@ -17,28 +18,16 @@ const certificatesConnection = mongoose.createConnection(certificatesMongoURI, {
   useUnifiedTopology: true
 });
 
-certificatesConnection.on('connected', () => {
-  console.log('MongoDB Connected to certificates database');
-});
-
-certificatesConnection.on('error', (err) => {
-  console.error('MongoDB Connection Error:', err);
-  process.exit(1); // Exit process with failure
-});
-
 // Connect to MongoDB for projects
 const projectsConnection = mongoose.createConnection(projectsMongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 
-projectsConnection.on('connected', () => {
-  console.log('MongoDB Connected to projects database');
-});
-
-projectsConnection.on('error', (err) => {
-  console.error('MongoDB Connection Error:', err);
-  process.exit(1); // Exit process with failure
+// Connect to MongoDB for blogs
+const blogsConnection = mongoose.createConnection(blogsMongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
 // Define Schema
@@ -48,9 +37,16 @@ const certificateSchema = new mongoose.Schema({
   imageUrl: String
 });
 
+const blogSchema = new mongoose.Schema({
+  title: String,
+  imageurl: String,
+  content: String
+});
+
 // Define Models for both databases
 const Certificate = certificatesConnection.model('Certificate', certificateSchema);
 const Project = projectsConnection.model('Project', certificateSchema);
+const Blog = blogsConnection.model('Blog', blogSchema);
 
 // Endpoint to fetch certificates
 app.get('/certificates', (req, res) => {
@@ -69,6 +65,32 @@ app.get('/projects', (req, res) => {
     .catch(err => {
       console.error(err);
       res.status(500).send('Error fetching projects');
+    });
+});
+
+// Endpoint to fetch all blog titles
+app.get('/blogs', (req, res) => {
+  Blog.find()
+    .then(blogs => res.json(blogs))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error fetching blogs');
+    });
+});
+
+// Endpoint to fetch a specific blog by title
+app.get('/blog/:title', (req, res) => {
+  Blog.findOne({ title: req.params.title })
+    .then(blog => {
+      if (blog) {
+        res.json(blog);
+      } else {
+        res.status(404).send('Blog not found');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error fetching blog');
     });
 });
 
